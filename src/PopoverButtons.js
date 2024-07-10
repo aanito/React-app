@@ -18,13 +18,13 @@ function PopoverButtons() {
   return (
     <div style={{ position: 'fixed', bottom: 0, width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-        Button 1
+        Book an appointment
       </Button>
       <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-        Button 2
+        Register for upcoming events
       </Button>
       <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-        Button 3
+        Email us
       </Button>
 
       <Popover

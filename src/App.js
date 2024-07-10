@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Card, CardContent, CardMedia, Grid, Slider } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Button, Card, CardContent, CardMedia, Slider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';           // Add this import statement
-import AssignmentIcon from '@mui/icons-material/Assignment'; // Add this import statement
-import EmailIcon from '@mui/icons-material/Email';   
 
 import './App.css'; // Import the external CSS file
 import PopoverButtons from './PopoverButtons';
+import FixedSidebar from './FixedSidebar';
 
 const featuredServices = [
   {
@@ -73,6 +71,7 @@ function App() {
           <Button color="inherit" startIcon={<AccountCircleIcon />}>Login</Button>
         </Toolbar>
       </AppBar>
+      <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
 
       <div className="slider-container">
         <SliderComponent services={featuredServices} />
@@ -83,27 +82,6 @@ function App() {
           <BlogPost key={index} post={post} />
         ))}
       </div>
-
-      <Drawer
-        anchor={'left'}
-        open={isDrawerOpen}
-        onClose={toggleDrawer(false)}
-      >
-        <List>
-          <ListItem button>
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon><AssignmentIcon /></ListItemIcon>
-            <ListItemText primary="Our Services" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon><EmailIcon /></ListItemIcon>
-            <ListItemText primary="Newsletter" />
-          </ListItem>
-        </List>
-      </Drawer>
 
       <PopoverButtons />
     </div>
