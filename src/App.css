@@ -22,3 +22,9 @@ li {
 .main-content {
   /* Add styling for the main content area if needed */
 }
+
+.tabs-container {
+  width: 500px;
+  margin: 0 auto; /* Centers the FullWidthTabs component horizontally */
+}
+
