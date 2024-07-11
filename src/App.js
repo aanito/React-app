@@ -6,6 +6,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './App.css'; // Import the external CSS file
 import PopoverButtons from './PopoverButtons';
 import FixedSidebar from './FixedSidebar';
+import Testimonials from './Testimonials';
+import OurTeam from './OurTeam';
 
 const featuredServices = [
   {
@@ -81,6 +83,14 @@ function App() {
         {blogPosts.map((post, index) => (
           <BlogPost key={index} post={post} />
         ))}
+      </div>
+
+      <div>
+        <OurTeam />
+      </div>
+
+      <div>
+        <Testimonials />
       </div>
 
       <PopoverButtons />
