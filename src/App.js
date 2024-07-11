@@ -10,6 +10,7 @@ import Testimonials from './Testimonials';
 import OurTeam from './OurTeam';
 import Footer from './Footer';
 import BlogPost from './BlogPost';
+import ServiceCard from './ServiceCard';
 
 
 const postsData = [
@@ -34,6 +35,25 @@ const postsData = [
     date: '2022-09-24',
     isFeatured: false,
   },
+];
+
+const servicesData = [
+  {
+    title: 'Digital Health Infrastructure',
+    description: 'Create stunning and responsive websites.',
+    imageUrl: 'web_design_image_url.jpg',
+  },
+  {
+    title: 'Quality Improvement',
+    description: 'Boost your online presence and reach more customers.',
+    imageUrl: 'digital_marketing_image_url.jpg',
+  },
+  {
+    title: 'Medical consultancy',
+    description: 'Beautiful and effective graphic design solutions.',
+    imageUrl: 'graphic_design_image_url.jpg',
+  },
+  // Add more service objects as needed
 ];
 
 function App() {
@@ -67,7 +87,18 @@ function App() {
       </AppBar>
       <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
 
-
+      <div>
+        <Container>
+          <Typography variant="h5" gutterBottom>
+            Our Services
+          </Typography>
+          <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            {servicesData.map((service, index) => (
+              <ServiceCard key={index} service={service} />
+            ))}
+          </Container>
+        </Container>
+      </div>
   
 
       <div>
