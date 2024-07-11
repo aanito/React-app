@@ -1,128 +1,37 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Card, CardContent, CardMedia, Slider } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
-import './App.css'; // Import the external CSS file
-import PopoverButtons from './PopoverButtons';
-import FixedSidebar from './FixedSidebar';
+import NavBar from './NavBar';
+import Sidebar from './Sidebar';
 
-const featuredServices = [
-  {
-    title: "Service 1",
-    description: "Description for Service 1",
-    imageUrl: "image-url1.jpg"
-  },
-  {
-    title: "Service 2",
-    description: "Description for Service 2",
-    imageUrl: "image-url2.jpg"
-  },
-  {
-    title: "Service 3",
-    description: "Description for Service 3",
-    imageUrl: "image-url3.jpg"
-  }
-];
-
-const blogPosts = [
-  {
-    title: "Blog Post 1",
-    content: "Content for Blog Post 1",
-    imageUrl: "blog-image-url1.jpg"
-  },
-  {
-    title: "Blog Post 2",
-    content: "Content for Blog Post 2",
-    imageUrl: "blog-image-url2.jpg"
-  },
-  {
-    title: "Blog Post 3",
-    content: "Content for Blog Post 3",
-    imageUrl: "blog-image-url3.jpg"
-  }
-];
-
-function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setIsDrawerOpen(open);
-  };
-
+export default function App() {
   return (
-    <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className="title">
-            Consultancy Services
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+
+      {/* Include the NavBar component */}
+      <NavBar />
+
+      {/* Include the Sidebar component */}
+      <Sidebar />
+
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
+        <Container maxWidth="xl">
+          <Typography paragraph>
+            {/* Main content of your app */}
+            {/* Add your main content here */}
           </Typography>
-          <Button color="inherit" startIcon={<AccountCircleIcon />}>Login</Button>
-        </Toolbar>
-      </AppBar>
-      <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
-
-      <div className="slider-container">
-        <SliderComponent services={featuredServices} />
-      </div>
-
-      <div className="blog-posts-container">
-        {blogPosts.map((post, index) => (
-          <BlogPost key={index} post={post} />
-        ))}
-      </div>
-
-      <PopoverButtons />
-    </div>
+          <Divider />
+          <Typography paragraph>
+            {/* Additional content */}
+            {/* Add more content here */}
+          </Typography>
+        </Container>
+      </Box>
+    </Box>
   );
 }
-
-function SliderComponent({ services }) {
-  return (
-    <Slider autoplay={3000} loop={true}>
-      {services.map((service, index) => (
-        <div key={index} className="slider-item">
-          <img src={service.imageUrl} alt={service.title} />
-          <div className="service-content">
-            <h2>{service.title}</h2>
-            <p>{service.description}</p>
-          </div>
-        </div>
-      ))}
-    </Slider>
-  );
-}
-
-function BlogPost({ post }) {
-  const { title, content, imageUrl } = post;
-
-  return (
-    <div style={{ display: 'flex' }}>
-      <Card className="blog-post" sx={{ maxWidth: 345, m: 2 }}>
-        <CardMedia
-          component="img"
-          image={imageUrl}
-          alt={title}
-          height="140"
-        />
-        <CardContent>
-          <Typography variant="h6" component="h3">{title}</Typography>
-          <Typography>{content}</Typography>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-export default App;
