@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Card, CardContent, CardMedia, Slider } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Button, Container, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -8,41 +8,32 @@ import PopoverButtons from './PopoverButtons';
 import FixedSidebar from './FixedSidebar';
 import Testimonials from './Testimonials';
 import OurTeam from './OurTeam';
+import Footer from './Footer';
+import BlogPost from './BlogPost';
 
-const featuredServices = [
-  {
-    title: "Service 1",
-    description: "Description for Service 1",
-    imageUrl: "image-url1.jpg"
-  },
-  {
-    title: "Service 2",
-    description: "Description for Service 2",
-    imageUrl: "image-url2.jpg"
-  },
-  {
-    title: "Service 3",
-    description: "Description for Service 3",
-    imageUrl: "image-url3.jpg"
-  }
-];
 
-const blogPosts = [
+const postsData = [
   {
-    title: "Blog Post 1",
-    content: "Content for Blog Post 1",
-    imageUrl: "blog-image-url1.jpg"
+    title: 'Featured Post Title',
+    content: 'Content of the featured post goes here. This is the main article that stands out.',
+    imageUrl: 'url_to_featured_image.jpg',
+    date: '2022-09-26',
+    isFeatured: true, // Marking this post as featured
   },
   {
-    title: "Blog Post 2",
-    content: "Content for Blog Post 2",
-    imageUrl: "blog-image-url2.jpg"
+    title: 'Regular Post 1 Title',
+    content: 'Content of regular post 1 goes here. It supports the featured post.',
+    imageUrl: 'url_to_regular_image_1.jpg',
+    date: '2022-09-25',
+    isFeatured: false,
   },
   {
-    title: "Blog Post 3",
-    content: "Content for Blog Post 3",
-    imageUrl: "blog-image-url3.jpg"
-  }
+    title: 'Regular Post 2 Title',
+    content: 'Content of regular post 2 goes here. Another supporting post for the featured article.',
+    imageUrl: 'url_to_regular_image_2.jpg',
+    date: '2022-09-24',
+    isFeatured: false,
+  },
 ];
 
 function App() {
@@ -54,6 +45,7 @@ function App() {
     }
     setIsDrawerOpen(open);
   };
+
 
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -75,14 +67,31 @@ function App() {
       </AppBar>
       <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
 
-      <div className="slider-container">
-        <SliderComponent services={featuredServices} />
-      </div>
 
-      <div className="blog-posts-container">
-        {blogPosts.map((post, index) => (
-          <BlogPost key={index} post={post} />
-        ))}
+  
+
+      <div>
+        <Container>
+          {postsData.map((post, index) => (
+            <React.Fragment key={index}>
+              {post.isFeatured && (
+                <BlogPost post={post} isFeatured />
+              )}
+            </React.Fragment>
+          ))}
+          
+          <Divider />
+          
+          <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            {postsData.map((post, index) => (
+              <React.Fragment key={index}>
+                {!post.isFeatured && (
+                  <BlogPost post={post} isFeatured={false} />
+                )}
+              </React.Fragment>
+            ))}
+          </Container>
+        </Container>
       </div>
 
       <div>
@@ -92,46 +101,16 @@ function App() {
       <div>
         <Testimonials />
       </div>
+      <div>
+        <PopoverButtons />
+      </div>
 
-      <PopoverButtons />
+      <div>
+        <Footer />
+      </div>
+
     </div>
-  );
-}
 
-function SliderComponent({ services }) {
-  return (
-    <Slider autoplay={3000} loop={true}>
-      {services.map((service, index) => (
-        <div key={index} className="slider-item">
-          <img src={service.imageUrl} alt={service.title} />
-          <div className="service-content">
-            <h2>{service.title}</h2>
-            <p>{service.description}</p>
-          </div>
-        </div>
-      ))}
-    </Slider>
-  );
-}
-
-function BlogPost({ post }) {
-  const { title, content, imageUrl } = post;
-
-  return (
-    <div style={{ display: 'flex' }}>
-      <Card className="blog-post" sx={{ maxWidth: 345, m: 2 }}>
-        <CardMedia
-          component="img"
-          image={imageUrl}
-          alt={title}
-          height="140"
-        />
-        <CardContent>
-          <Typography variant="h6" component="h3">{title}</Typography>
-          <Typography>{content}</Typography>
-        </CardContent>
-      </Card>
-    </div>
   );
 }
 
