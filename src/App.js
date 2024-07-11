@@ -11,6 +11,8 @@ import OurTeam from './OurTeam';
 import Footer from './Footer';
 import BlogPost from './BlogPost';
 import ServiceCard from './ServiceCard';
+import Partners from './Partners';
+import Events from './Events';
 
 
 const postsData = [
@@ -132,6 +134,25 @@ function App() {
       <div>
         <Testimonials />
       </div>
+
+      <div>
+        <Container sx={{ py: 4 }}>
+          {/* Your existing content */}
+          <Events /> {/* Render the Events component */}
+        </Container>
+      </div>
+
+      <div>
+        <Container>
+          {/* BlogPost component rendering logic */}
+          
+          <Divider />
+          
+          {/* Rendering the Partners component */}
+          <Partners />
+        </Container>
+      </div>
+
       <div>
         <PopoverButtons />
       </div>
