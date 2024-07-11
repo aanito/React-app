@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Container, Divider } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Button, Container, Divider, StepIcon } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -13,6 +13,7 @@ import BlogPost from './BlogPost';
 import ServiceCard from './ServiceCard';
 import Partners from './Partners';
 import Events from './Events';
+import { AccountBox } from '@mui/icons-material';
 
 
 const postsData = [
@@ -72,19 +73,25 @@ function App() {
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className="title">
-            Consultancy Services
-          </Typography>
-          <Button color="inherit" startIcon={<AccountCircleIcon />}>Login</Button>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>  
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" className="title">
+              Health-E Consult
+            </Typography>
+          </div>
+
+          <div>
+            <Button color="inherit" startIcon={<AccountCircleIcon />}>Login</Button>
+            <Button color="inherit" startIcon={<StepIcon/>}>Register</Button>
+          </div>
         </Toolbar>
       </AppBar>
       <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
