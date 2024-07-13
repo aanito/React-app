@@ -14,6 +14,9 @@ import ServiceCard from './ServiceCard';
 import Partners from './Partners';
 import Events from './Events';
 import { AccountBox } from '@mui/icons-material';
+import healthelogo from "./healthelogo.svg";
+import health from "./health.png";
+
 
 
 const postsData = [
@@ -83,6 +86,8 @@ function App() {
             >
               <MenuIcon />
             </IconButton>
+            {/* <img src={healthelogo} alt="Logo" style={{ height: 40, marginRight: 10 }} /> */}
+            <img src={health} alt="Logo" style={{ height: 40, marginRight: 10 }} />
             <Typography variant="h6" className="title">
               Health-E Consult
             </Typography>
