@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Container, Divider, StepIcon } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Typography, Container, Divider, } from '@mui/material';
 
 import './App.css'; // Import the external CSS file
 import AppBarComponent from './components/AppBar';
@@ -14,10 +12,11 @@ import BlogPost from './components/BlogPost';
 import ServiceCard from './components/ServiceCard';
 import Partners from './components/Partners';
 import Events from './components/Events';
-import { AccountBox } from '@mui/icons-material';
-import healthelogo from "./healthelogo.svg";
-import health from "./health.png";
 
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/AdminDashboard';
+import UnauthorizedAccess from './pages/UnauthorizedAccess';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 const postsData = [
@@ -73,6 +72,7 @@ function App() {
     setIsDrawerOpen(open);
   };
 
+  const userRole = 'admin'; // Get the user's role from authentication
 
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -154,6 +154,16 @@ function App() {
       <div>
         <Footer />
       </div>
+
+      <Router>
+        <Switch>
+          <ProtectedRoute path="/admin" component={AdminDashboard} userRole={userRole} />
+          <Route path="/unauthorized" component={UnauthorizedAccess} />
+          <Route path="/" exact>
+            {/* My default route */}
+          </Route>
+        </Switch>
+      </Router>
 
     </div>
 
