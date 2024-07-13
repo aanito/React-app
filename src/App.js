@@ -4,15 +4,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import './App.css'; // Import the external CSS file
-import PopoverButtons from './PopoverButtons';
-import FixedSidebar from './FixedSidebar';
-import Testimonials from './Testimonials';
-import OurTeam from './OurTeam';
-import Footer from './Footer';
-import BlogPost from './BlogPost';
-import ServiceCard from './ServiceCard';
-import Partners from './Partners';
-import Events from './Events';
+import AppBarComponent from './components/AppBar';
+import PopoverButtons from './components/PopoverButtons';
+import FixedSidebar from './components/FixedSidebar';
+import Testimonials from './components/Testimonials';
+import OurTeam from './components/OurTeam';
+import Footer from './components/Footer';
+import BlogPost from './components/BlogPost';
+import ServiceCard from './components/ServiceCard';
+import Partners from './components/Partners';
+import Events from './components/Events';
 import { AccountBox } from '@mui/icons-material';
 import healthelogo from "./healthelogo.svg";
 import health from "./health.png";
@@ -75,31 +76,12 @@ function App() {
 
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
-      <AppBar position="static">
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>  
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            {/* <img src={healthelogo} alt="Logo" style={{ height: 40, marginRight: 10 }} /> */}
-            <img src={health} alt="Logo" style={{ height: 40, marginRight: 10 }} />
-            <Typography variant="h6" className="title">
-              Health-E Consult
-            </Typography>
-          </div>
+      
+      <AppBarComponent toggleDrawer={toggleDrawer} />
 
-          <div>
-            <Button color="inherit" startIcon={<AccountCircleIcon />}>Login</Button>
-            <Button color="inherit" startIcon={<StepIcon/>}>Register</Button>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      <div>
+        <FixedSidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      </div>
 
       <div>
         <Container>
