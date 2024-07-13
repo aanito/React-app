@@ -18,7 +18,6 @@ import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedAccess from './pages/UnauthorizedAccess';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
 const postsData = [
   {
     title: 'Featured Post Title',
@@ -156,13 +155,12 @@ function App() {
       </div>
 
       <Router>
-        <Switch>
-          <ProtectedRoute path="/admin" component={AdminDashboard} userRole={userRole} />
-          <Route path="/unauthorized" component={UnauthorizedAccess} />
-          <Route path="/" exact>
-            {/* My default route */}
-          </Route>
-        </Switch>
+        <Routes>
+          {/* Other routes */}
+          <Route path="/admin" element={<ProtectedRoute component={AdminDashboard} userRole="admin" />} />
+          <Route path="/unauthorized" element={<UnauthorizedAccess />} />
+          {/* Your other routes */}
+        </Routes>
       </Router>
 
     </div>
