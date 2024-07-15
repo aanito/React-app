@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Container, Divider, } from '@mui/material';
 
 import './App.css'; // Import the external CSS file
@@ -9,7 +9,9 @@ import Testimonials from './components/Testimonials';
 import OurTeam from './components/OurTeam';
 import Footer from './components/Footer';
 import BlogPost from './components/BlogPost';
+import serviceService from './Services/Services.service';
 import ServiceCard from './components/ServiceCard';
+
 import Partners from './components/Partners';
 import Events from './components/Events';
 
@@ -42,24 +44,25 @@ const postsData = [
   },
 ];
 
-const servicesData = [
-  {
-    title: 'Digital Health Infrastructure',
-    description: 'Create stunning and responsive websites.',
-    imageUrl: 'web_design_image_url.jpg',
-  },
-  {
-    title: 'Quality Improvement',
-    description: 'Boost your online presence and reach more customers.',
-    imageUrl: 'digital_marketing_image_url.jpg',
-  },
-  {
-    title: 'Medical consultancy',
-    description: 'Beautiful and effective graphic design solutions.',
-    imageUrl: 'graphic_design_image_url.jpg',
-  },
+
+// const servicesData = [
+//   {
+//     title: 'Digital Health Infrastructure',
+//     description: 'Create stunning and responsive websites.',
+//     imageUrl: 'web_design_image_url.jpg',
+//   },
+//   {
+//     title: 'Quality Improvement',
+//     description: 'Boost your online presence and reach more customers.',
+//     imageUrl: 'digital_marketing_image_url.jpg',
+//   },
+//   {
+//     title: 'Medical consultancy',
+//     description: 'Beautiful and effective graphic design solutions.',
+//     imageUrl: 'graphic_design_image_url.jpg',
+//   },
   // Add more service objects as needed
-];
+// ];
 
 function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -72,6 +75,19 @@ function App() {
   };
 
   const userRole = 'admin'; // Get the user's role from authentication
+
+  const [services, setServices] = useState([]);
+  // const [teamMembers, setTeamMembers] = useState([]);
+
+  useEffect(() => {
+    serviceService.getAllServices().then(response => {
+      setServices(response.data);
+    });
+
+    // teamMemberService.getAllTeamMembers().then(response => {
+    //   setTeamMembers(response.data);
+    // });
+  }, []);
 
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -88,11 +104,12 @@ function App() {
             Our Services
           </Typography>
           <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {servicesData.map((service, index) => (
+            {services.map((service, index) => (
               <ServiceCard key={index} service={service} />
             ))}
           </Container>
         </Container>
+
       </div>
   
 
@@ -154,14 +171,20 @@ function App() {
         <Footer />
       </div>
 
-      <Router>
-        <Routes>
+      {/* <Router>
+        <Routes> */}
           {/* Other routes */}
-          <Route path="/admin" element={<ProtectedRoute component={AdminDashboard} userRole="admin" />} />
-          <Route path="/unauthorized" element={<UnauthorizedAccess />} />
+          {/* <Route path="/services" element={<Services />} />
+          <Route
+            path="/admin"
+            element={<ProtectedRoute element={<AdminDashboard />} userRole="admin" />}
+          />
+          <Route path="/unauthorized" element={<UnauthorizedAccess />} /> */}
           {/* Your other routes */}
-        </Routes>
-      </Router>
+        {/* </Routes>
+      </Router> */}
+
+
 
     </div>
 
