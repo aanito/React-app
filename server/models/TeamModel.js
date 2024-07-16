@@ -1,5 +1,3 @@
-// Team.js - Team member schema
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -11,19 +9,27 @@ const teamMemberSchema = new Schema({
   },
   position: {
     type: String,
-    required: false
+    required: true
   },
   expertise: {
     type: String,
     required: true
   },
+  experience: {
+    type: String,
+    required: true
+  },
   projects: {
     type: String,
-    required: false
+    required: true
   },
   interests: {
     type: String,
-    required: false
+    required: true
+  },
+  avatarUrl: {
+    type: String, // Assuming the avatar URL is a string
+    required: true
   }
 });
 

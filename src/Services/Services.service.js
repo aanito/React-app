@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'mongodb://localhost:27017/consult/services';
+const API_URL = 'http://localhost:5000/api/services';
 
 const getAllServices = () => {
   return axios.get(API_URL);
