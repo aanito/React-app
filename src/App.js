@@ -14,6 +14,8 @@ import ServiceCard from './components/ServiceCard';
 
 import Partners from './components/Partners';
 import Events from './components/Events';
+import { blueGrey } from '@mui/material/colors';
+import { CenterFocusStrong } from '@mui/icons-material';
 
 
 function App() {
@@ -70,7 +72,7 @@ function App() {
 
       <div>
         <Container>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" align='center' gutterBottom>
             Our Services
           </Typography>
           <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -118,6 +120,8 @@ function App() {
       <div>
         <Container sx={{ py: 4 }}>
           {/* Your existing content */}
+          <Divider />
+          <Typography variant='h5' textAlign='center' > Events </Typography>
           <Events /> {/* Render the Events component */}
         </Container>
       </div>
@@ -129,6 +133,7 @@ function App() {
           <Divider />
           
           {/* Rendering the Partners component */}
+          {/* <Typography variant="h5" align='center'>Partners</Typography> */}
           <Partners />
         </Container>
       </div>

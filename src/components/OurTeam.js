@@ -23,7 +23,7 @@ const OurTeam = () => {
 
   return (
     <Box sx={{ flexGrow: 1, p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" align='center' gutterBottom>
         Our Team
       </Typography>
       <Grid container spacing={3}>

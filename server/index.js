@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // MongoDB URL
-const db_url = 'mongodb://localhost:27017/consult'; // Replace with your actual MongoDB URL
+const db_url = 'mongodb://localhost:27017/consult'; // Actual MongoDB URL
 
 // Connect to MongoDB
 mongoose.connect(db_url, {
@@ -25,6 +25,10 @@ mongoose.connect(db_url, {
 const Service = require('./models/ServiceModel'); 
 const BlogPost = require('./models/BlogPostModel');
 const TeamMember = require('./models/TeamModel');
+const Testimonial = require('./models/TestimonialModel');
+const Event = require('./models/EventModel');
+const Partner = require('./models/PartnerModel');
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -65,6 +69,37 @@ app.get('/api/teammembers', async (req, res) => {
   }
 });
 
+app.get('/api/testimonials', async (req, res) => {
+  try {
+    // Fetch all team members from the 'teamMembers' collection
+    const testimonials = await Testimonial.find();
+    res.json(testimonials);
+  } catch (error) {
+    console.error('Error fetching testimonials:', error);
+    res.status(500).json({ message: 'Error fetching testimonials' });
+  }
+});
+
+// Defined the endpoint to fetch events data
+app.get('/api/events', async (req, res) => {
+  try {
+    const events = await Event.find(); // Retrieve all events from the database
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching events' });
+  }
+});
+
+
+// Defined the endpoint to fetch partner data
+app.get('/api/partners', async (req, res) => {
+  try {
+    const partners = await Partner.find(); // Retrieve all partners from the database
+    res.json(partners);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching partners' });
+  }
+});
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
