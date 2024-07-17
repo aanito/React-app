@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Typography, Container, Divider, } from '@mui/material';
 
 import './App.css'; // Import the external CSS file
@@ -10,56 +11,10 @@ import OurTeam from './components/OurTeam';
 import Footer from './components/Footer';
 import BlogPost from './components/BlogPost';
 import ServiceCard from './components/ServiceCard';
+
 import Partners from './components/Partners';
 import Events from './components/Events';
 
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/AdminDashboard';
-import UnauthorizedAccess from './pages/UnauthorizedAccess';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-const postsData = [
-  {
-    title: 'Featured Post Title',
-    content: 'Content of the featured post goes here. This is the main article that stands out.',
-    imageUrl: 'url_to_featured_image.jpg',
-    date: '2022-09-26',
-    isFeatured: true, // Marking this post as featured
-  },
-  {
-    title: 'Regular Post 1 Title',
-    content: 'Content of regular post 1 goes here. It supports the featured post.',
-    imageUrl: 'url_to_regular_image_1.jpg',
-    date: '2022-09-25',
-    isFeatured: false,
-  },
-  {
-    title: 'Regular Post 2 Title',
-    content: 'Content of regular post 2 goes here. Another supporting post for the featured article.',
-    imageUrl: 'url_to_regular_image_2.jpg',
-    date: '2022-09-24',
-    isFeatured: false,
-  },
-];
-
-const servicesData = [
-  {
-    title: 'Digital Health Infrastructure',
-    description: 'Create stunning and responsive websites.',
-    imageUrl: 'web_design_image_url.jpg',
-  },
-  {
-    title: 'Quality Improvement',
-    description: 'Boost your online presence and reach more customers.',
-    imageUrl: 'digital_marketing_image_url.jpg',
-  },
-  {
-    title: 'Medical consultancy',
-    description: 'Beautiful and effective graphic design solutions.',
-    imageUrl: 'graphic_design_image_url.jpg',
-  },
-  // Add more service objects as needed
-];
 
 function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -72,6 +27,37 @@ function App() {
   };
 
   const userRole = 'admin'; // Get the user's role from authentication
+
+  const [services, setServices] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
+
+  useEffect(() => {
+    // Fetch services from the backend MongoDB server
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/services'); // Replace the URL with your backend server endpoint
+        setServices(response.data);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/blogposts');
+        setBlogPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      }
+    };
+
+    fetchServices();
+    fetchBlogPosts();
+
+  }, []); // Empty dependency array to run the effect only once
+
+   // Sort the blogPosts array based on the date property in descending order
+   const sortedBlogPosts = blogPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -88,31 +74,30 @@ function App() {
             Our Services
           </Typography>
           <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {servicesData.map((service, index) => (
+            {services.map((service, index) => (
               <ServiceCard key={index} service={service} />
             ))}
           </Container>
         </Container>
+
       </div>
   
 
       <div>
         <Container>
-          {postsData.map((post, index) => (
+          {sortedBlogPosts.map((post, index) => (
             <React.Fragment key={index}>
-              {post.isFeatured && (
-                <BlogPost post={post} isFeatured />
-              )}
+              {post.isFeatured && <BlogPost key={index} post={post} isFeatured />}
             </React.Fragment>
           ))}
-          
+
           <Divider />
-          
+
           <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {postsData.map((post, index) => (
+            {sortedBlogPosts.map((post, index) => (
               <React.Fragment key={index}>
                 {!post.isFeatured && (
-                  <BlogPost post={post} isFeatured={false} />
+                  <BlogPost key={index} post={post} isFeatured={false} />
                 )}
               </React.Fragment>
             ))}
@@ -121,7 +106,9 @@ function App() {
       </div>
 
       <div>
-        <OurTeam />
+        <Container>
+          <OurTeam />
+        </Container>
       </div>
 
       <div>
@@ -154,14 +141,6 @@ function App() {
         <Footer />
       </div>
 
-      <Router>
-        <Routes>
-          {/* Other routes */}
-          <Route path="/admin" element={<ProtectedRoute component={AdminDashboard} userRole="admin" />} />
-          <Route path="/unauthorized" element={<UnauthorizedAccess />} />
-          {/* Your other routes */}
-        </Routes>
-      </Router>
 
     </div>
 
@@ -169,3 +148,4 @@ function App() {
 }
 
 export default App;
+
