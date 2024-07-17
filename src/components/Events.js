@@ -1,35 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-const eventsData = [
-  {
-    title: 'Upcoming Event 1',
-    date: 'August 15, 2024',
-    image: 'event1_image.jpg',
-    description: 'Description of the upcoming event 1...',
-    registrationLink: 'registration_link_for_event1',
-  },
-  {
-    title: 'Upcoming Event 2',
-    date: 'September 10, 2024',
-    image: 'event2_image.jpg',
-    description: 'Description of the upcoming event 2...',
-    registrationLink: 'registration_link_for_event2',
-  },
-  // Add details for additional events as needed
-];
+import axios from 'axios'; // For making HTTP requests
 
 const Events = () => {
-  const upcomingEvent = eventsData.reduce((earliest, event) =>
-    new Date(event.date) < new Date(earliest.date) ? event : earliest
-  );
+  const [events, setEvents] = useState([]);
 
-  const otherEvents = eventsData.filter(event => event !== upcomingEvent);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/events'); // Assuming '/api/events' fetches events data
+        setEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (events.length === 0) {
+    return <div>Loading...</div>; // Display a loading message while fetching data
+  }
+
+  const upcomingEvent = events.reduce((earliest, event) => (
+    new Date(event.date) < new Date(earliest.date) ? event : earliest
+  ));
+
+  const otherEvents = events.filter(event => event !== upcomingEvent);
 
   return (
     <div>
@@ -46,7 +48,7 @@ const Events = () => {
             {upcomingEvent.title}
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            Date: {upcomingEvent.date}
+            Date: {new Date(upcomingEvent.date).toDateString()}
           </Typography>
           <Typography variant="body1" color="text.secondary" paragraph>
             {upcomingEvent.description}
@@ -57,7 +59,7 @@ const Events = () => {
         </CardContent>
       </Card>
 
-      {/* Display details of other events horizontally */}
+      {/* Display details of other events */}
       <Grid container spacing={2} justifyContent="center">
         {otherEvents.map(event => (
           <Grid item key={event.title}>
@@ -73,7 +75,7 @@ const Events = () => {
                   {event.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  Date: {event.date}
+                  Date: {new Date(event.date).toDateString()}
                 </Typography>
                 <Button variant="outlined" component="a" href={event.registrationLink}>
                   Register
