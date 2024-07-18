@@ -21,14 +21,6 @@ mongoose.connect(db_url, {
   process.exit(1); // Exit the process with a non-zero status code to indicate an error
 });
 
-// Load the Service model
-const Service = require('./models/ServiceModel');
-const BlogPost = require('./models/BlogPostModel');
-const TeamMember = require('./models/TeamModel');
-const Testimonial = require('./models/TestimonialModel');
-const Event = require('./models/EventModel');
-const Partner = require('./models/PartnerModel');
-
 
 // Middleware
 app.use(cors());
@@ -52,60 +44,6 @@ app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/partners', partnersRouter);
 
-// GET endpoint to fetch blog posts from the MongoDB database
-// app.get('/api/blogposts', async (req, res) => {
-//   try {
-//     // Fetch all blog posts from the 'blogposts' collection (assuming the collection name is 'blogposts')
-//     const blogPosts = await BlogPost.find();
-//     res.json(blogPosts);
-//   } catch (error) {
-//     console.error('Error fetching blog posts:', error);
-//     res.status(500).json({ message: 'Error fetching blog posts' });
-//   }
-// });
-
-app.get('/api/teammembers', async (req, res) => {
-  try {
-    // Fetch all team members from the 'teamMembers' collection
-    const teamMembers = await TeamMember.find();
-    res.json(teamMembers);
-  } catch (error) {
-    console.error('Error fetching team members:', error);
-    res.status(500).json({ message: 'Error fetching team members' });
-  }
-});
-
-app.get('/api/testimonials', async (req, res) => {
-  try {
-    // Fetch all team members from the 'teamMembers' collection
-    const testimonials = await Testimonial.find();
-    res.json(testimonials);
-  } catch (error) {
-    console.error('Error fetching testimonials:', error);
-    res.status(500).json({ message: 'Error fetching testimonials' });
-  }
-});
-
-// Defined the endpoint to fetch events data
-app.get('/api/events', async (req, res) => {
-  try {
-    const events = await Event.find(); // Retrieve all events from the database
-    res.json(events);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching events' });
-  }
-});
-
-
-// Defined the endpoint to fetch partner data
-app.get('/api/partners', async (req, res) => {
-  try {
-    const partners = await Partner.find(); // Retrieve all partners from the database
-    res.json(partners);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching partners' });
-  }f
-});
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
