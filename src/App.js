@@ -16,6 +16,7 @@ import Partners from './components/Partners';
 import Events from './components/Events';
 import { blueGrey } from '@mui/material/colors';
 import { CenterFocusStrong } from '@mui/icons-material';
+import AdminPanel from './components/AdminPanel';
 
 
 function App() {
@@ -75,11 +76,7 @@ function App() {
           <Typography variant="h5" align='center' gutterBottom>
             Our Services
           </Typography>
-          <Container sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {services.map((service, index) => (
-              <ServiceCard key={index} service={service} />
-            ))}
-          </Container>
+          <ServiceCard />
         </Container>
 
       </div>
@@ -144,6 +141,10 @@ function App() {
 
       <div>
         <Footer />
+      </div>
+
+      <div>
+        <AdminPanel />
       </div>
 
 

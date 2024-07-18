@@ -22,41 +22,47 @@ mongoose.connect(db_url, {
 });
 
 // Load the Service model
-const Service = require('./models/ServiceModel'); 
+const Service = require('./models/ServiceModel');
 const BlogPost = require('./models/BlogPostModel');
 const TeamMember = require('./models/TeamModel');
 const Testimonial = require('./models/TestimonialModel');
 const Event = require('./models/EventModel');
 const Partner = require('./models/PartnerModel');
 
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// GET endpoint to fetch services from the MongoDB database
-app.get('/api/services', async (req, res) => {
-  try {
-    // Fetch all services from the 'services' collection
-    const services = await Service.find();
-    res.json(services);
-  } catch (error) {
-    console.error('Error fetching services:', error);
-    res.status(500).json({ message: 'Error fetching services' });
-  }
-});
+
+// Import router files
+const servicesRouter = require('./routes/servicesRouter');
+const blogPostsRouter = require('./routes/blogPostsRouter');
+const teamMembersRouter = require('./routes/teamMembersRouter');
+const testimonialsRouter = require('./routes/testimonialsRouter');
+const eventsRouter = require('./routes/eventsRouter');
+const partnersRouter = require('./routes/partnersRouter');
+
+// Use the routers
+app.use('/api/services', servicesRouter);
+app.use('/api/blogposts', blogPostsRouter);
+app.use('/api/teammembers', teamMembersRouter);
+app.use('/api/testimonials', testimonialsRouter);
+app.use('/api/events', eventsRouter);
+app.use('/api/partners', partnersRouter);
 
 // GET endpoint to fetch blog posts from the MongoDB database
-app.get('/api/blogposts', async (req, res) => {
-  try {
-    // Fetch all blog posts from the 'blogposts' collection (assuming the collection name is 'blogposts')
-    const blogPosts = await BlogPost.find();
-    res.json(blogPosts);
-  } catch (error) {
-    console.error('Error fetching blog posts:', error);
-    res.status(500).json({ message: 'Error fetching blog posts' });
-  }
-});
+// app.get('/api/blogposts', async (req, res) => {
+//   try {
+//     // Fetch all blog posts from the 'blogposts' collection (assuming the collection name is 'blogposts')
+//     const blogPosts = await BlogPost.find();
+//     res.json(blogPosts);
+//   } catch (error) {
+//     console.error('Error fetching blog posts:', error);
+//     res.status(500).json({ message: 'Error fetching blog posts' });
+//   }
+// });
 
 app.get('/api/teammembers', async (req, res) => {
   try {
@@ -98,7 +104,7 @@ app.get('/api/partners', async (req, res) => {
     res.json(partners);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching partners' });
-  }
+  }f
 });
 // Start the server
 const PORT = process.env.PORT || 5000;
