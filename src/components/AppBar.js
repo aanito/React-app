@@ -19,8 +19,8 @@ const AppBarComponent = ({ toggleDrawer }) => {
             <MenuIcon />
           </IconButton>
           <img src={health} alt="Logo" style={{ height: 40, marginRight: 10 }} />
-          <Button color="inherit" variant="h6" className="title">
-            Health-E Consult
+          <Button color="inherit" variant="h5" className="title">
+            E-mpactHealth Consultancy
           </Button>
         </div>
         <div>

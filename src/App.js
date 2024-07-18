@@ -16,7 +16,7 @@ import Partners from './components/Partners';
 import Events from './components/Events';
 import { blueGrey } from '@mui/material/colors';
 import { CenterFocusStrong } from '@mui/icons-material';
-import AdminPanel from './components/AdminPanel';
+import AdminPanel from './components/Admin/AdminPanel';
 
 
 function App() {
