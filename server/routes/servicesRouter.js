@@ -1,11 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const Service = require('../models/ServiceModel');
+const multer = require('multer');
+const { GridFSBucket } = require('mongodb');
+const { Readable } = require('stream');
+const mongoose = require('mongoose');
+
+const conn = mongoose.connection;
+let gfs;
+
+conn.once('open', () => {
+  gfs = new GridFSBucket(conn.db, {
+    bucketName: 'images'
+  });
+});
+
+const upload = multer().single('image');
 
 // GET endpoint to fetch all services
 router.get('/', async (req, res) => {
   try {
-    const services = await Service.find(); // Retrieve all services from the 'services' collection
+    const services = await Service.find();
     res.json(services);
   } catch (error) {
     console.error('Error fetching services:', error);
@@ -13,16 +28,24 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST endpoint to add a new service
-router.post('/', async (req, res) => {
+// POST endpoint to add a new service with image upload
+router.post('/', upload, async (req, res) => {
   try {
-    const { title, description, imageUrl } = req.body; // Extract service data from the request body
+    const { title, description, imageData } = req.body;
+    const newService = new Service({ title, description });
 
-    const newService = new Service({ title, description, imageUrl }); // Create a new service instance
+    if (imageData) {
+      const savedService = await newService.save();
 
-    const savedService = await newService.save(); // Save the new service to the database
+      savedService.image.data = imageData; // Store the base64 encoded image data
+      savedService.image.contentType = 'image/png'; // Update the content type as per your requirements
+      await savedService.save();
 
-    res.status(201).json(savedService); // Return the saved service as the response
+      res.status(201).json(savedService);
+    } else {
+      const savedService = await newService.save();
+      res.status(201).json(savedService);
+    }
   } catch (error) {
     console.error('Error adding service:', error);
     res.status(500).json({ message: 'Error adding service' });

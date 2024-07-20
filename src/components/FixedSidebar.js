@@ -7,20 +7,37 @@ import { styled } from '@mui/system';
 
 const SidebarContainer = styled('div')({
   position: 'fixed',
-  top: '100px', // Adjust based on your AppBar height
+  top: '100px', 
   width: '240px',
   backgroundColor: 'lightblue',
 });
 
+const StyledList = styled(List)({
+  paddingTop: '40px', // Added space above the items
+  paddingBottom: '20px', // Added space below the items
+});
+
+const StyledFirstListItem = styled(ListItem)({
+  marginTop: '50px', // Added space above the first item
+});
+
+
 function FixedSidebar({ isDrawerOpen, toggleDrawer }) {
   return (
     <SidebarContainer>
-      <Drawer anchor="left" open={isDrawerOpen} onClose={toggleDrawer(false)}>
-        <List>
-          <ListItem button>
+      <Drawer 
+      anchor="left" 
+      open={isDrawerOpen} 
+      onClose={toggleDrawer(false)}
+      variant="persistent"
+  
+      style={{ top: '100px' }}  // Ensure the Drawer starts below the appbar
+      > 
+        <StyledList>
+          <StyledFirstListItem button>
             <ListItemIcon><HomeIcon /></ListItemIcon>
             <ListItemText primary="Home" />
-          </ListItem>
+          </StyledFirstListItem>
           <ListItem button>
             <ListItemIcon><AssignmentIcon /></ListItemIcon>
             <ListItemText primary="Our Services" />
@@ -53,7 +70,7 @@ function FixedSidebar({ isDrawerOpen, toggleDrawer }) {
             <ListItemIcon><EmailIcon /></ListItemIcon>
             <ListItemText primary="our partners" />
           </ListItem>
-        </List>
+        </StyledList>
       </Drawer>
     </SidebarContainer>
   );

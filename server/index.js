@@ -3,12 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { GridFSBucket } = require('mongodb');
+const multer = require('multer');
+const { Readable } = require('stream');
 
 // Use the mongoose library's built-in promise library to avoid deprecation warnings
 mongoose.Promise = global.Promise;
 
 // MongoDB URL
-const db_url = 'mongodb://localhost:27017/consult'; // Actual MongoDB URL
+const db_url = 'mongodb://localhost:27017/consult'; // MongoDB URL
 
 // Connect to MongoDB
 mongoose.connect(db_url, {
@@ -21,11 +24,22 @@ mongoose.connect(db_url, {
   process.exit(1); // Exit the process with a non-zero status code to indicate an error
 });
 
+// Get default connection
+const conn = mongoose.connection;
+let gfs;
+
+conn.once('open', () => {
+  gfs = new GridFSBucket(conn.db, {
+    bucketName: 'images'
+  });
+});
+
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
 
 
 // Import router files

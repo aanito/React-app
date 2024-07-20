@@ -14,8 +14,6 @@ import ServiceCard from './components/ServiceCard';
 
 import Partners from './components/Partners';
 import Events from './components/Events';
-import { blueGrey } from '@mui/material/colors';
-import { CenterFocusStrong } from '@mui/icons-material';
 import AdminPanel from './components/Admin/AdminPanel';
 
 
@@ -29,21 +27,18 @@ function App() {
     setIsDrawerOpen(open);
   };
 
-  const userRole = 'admin'; // Get the user's role from authentication
+  const headerStyle = {
+    fontSize: '2.0rem', // Custom font size
+    fontWeight: 'bold', // Bold font weight
+    color: '#04386d', // Custom text color
+    textTransform: 'uppercase', // Uppercase text
+    marginBottom: '20px', // Bottom margin
+    // Add any other styles as needed
+  };
 
-  const [services, setServices] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
 
   useEffect(() => {
-    // Fetch services from the backend MongoDB server
-    const fetchServices = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/services'); // Replace the URL with your backend server endpoint
-        setServices(response.data);
-      } catch (error) {
-        console.error('Error fetching services:', error);
-      }
-    };
 
     const fetchBlogPosts = async () => {
       try {
@@ -54,7 +49,6 @@ function App() {
       }
     };
 
-    fetchServices();
     fetchBlogPosts();
 
   }, []); // Empty dependency array to run the effect only once
@@ -63,7 +57,7 @@ function App() {
    const sortedBlogPosts = blogPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
-    <div className="app-container" style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', marginTop: '100px', marginLeft: '200px' }}>
       
       <AppBarComponent toggleDrawer={toggleDrawer} />
 
@@ -72,8 +66,8 @@ function App() {
       </div>
 
       <div>
-        <Container>
-          <Typography variant="h5" align='center' gutterBottom>
+        <Container >
+          <Typography variant="h5" align='center' gutterBottom style={headerStyle}>
             Our Services
           </Typography>
           <ServiceCard />
