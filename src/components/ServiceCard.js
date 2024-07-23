@@ -24,7 +24,7 @@ const ServiceCard = () => {
 
   // Function to construct the Cloudinary URL for the image
   const getImageUrl = (imagePublicId) => {
-    return `https://res.cloudinary.com/${process.env.CLOUDINARY_NAME}/services/${imagePublicId}`;
+    return `https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload/${imagePublicId}`;
   };
   
   return (
