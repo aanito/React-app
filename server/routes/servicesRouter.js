@@ -22,27 +22,20 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST endpoint to add a new service with Cloudinary image upload
-router.post('/', upload.single('image'), async (req, res) => {
+// POST endpoint to add a new service
+router.post('/', async (req, res) => {
   try {
-    const { title, description } = req.body;
-    
-    if (!req.file) {
-      return res.status(400).json({ message: 'Image file is required' });
-    }
+    const { title, description, imagePublicId, imageUrl } = req.body;
 
-    // Upload image to Cloudinary
-    const uploadedImage = await cloudinary.uploader.upload(req.file.path, { folder: 'services' });
-
-    // Create a new Service instance with title, description, and imagePublicId
+    // Create a new Service instance with the extracted service details
     const newService = new Service({
       title,
       description,
-      imageUrl: uploadedImage.secure_url, // Store the secure URL of the uploaded image
-      imagePublicId: uploadedImage.public_id
+      imagePublicId,
+      imageUrl
     });
 
-    // Save the service with the image details
+    // Save the service with the provided image details
     const savedService = await newService.save();
     
     res.status(201).json(savedService);
@@ -51,6 +44,5 @@ router.post('/', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Error adding service' });
   }
 });
-
 
 module.exports = router;

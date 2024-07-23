@@ -63,22 +63,6 @@ app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/partners', partnersRouter);
 
-// Express route for image upload
-app.post('/upload', upload.single('image'), async (req, res) => {
-  try {
-    // Upload image to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path , {
-      //  folder:'folder_name'
-      // folder:'Folders'
-    });
-
-    // Send the Cloudinary URL in the response
-    res.json({ imageUrl: result.secure_url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error uploading image to Cloudinary' });
-  }
-});
 
 // Start the server
 const PORT = process.env.PORT || 5000;

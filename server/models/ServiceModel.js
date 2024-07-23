@@ -11,20 +11,3 @@ const serviceSchema = new Schema({
 const Service = mongoose.model('Service', serviceSchema);
 
 module.exports = Service;
-
-
-// const mongoose = require('mongoose');
-// const { Schema } = mongoose;
-
-// const serviceSchema = new Schema({
-//   title: { type: String, required: true },
-//   description: { type: String, required: true },
-//   image: {
-//     data: Buffer, // Store the image data as binary data
-//     contentType: String // Store the content type of the image
-//   }
-// });
-
-// const Service = mongoose.model('Service', serviceSchema);
-
-// module.exports = Service;

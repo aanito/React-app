@@ -4,12 +4,13 @@ import { Typography, Grid, TextField, Button } from '@mui/material';
 import CollectionTable from './CollectionTable';
 
 const uploadPreset = 'services'; // Actual unsigned upload preset
+// const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
 
 const serviceSchema = {
   columns: [
     { label: 'Title', field: 'title' },
     { label: 'Description', field: 'description' },
-    { label: 'Image URL', field: 'imageUrl' }, // Modify schema to include imageURL
+    { label: 'Image URL', field: 'imageUrl' },
   ],
 };
 
@@ -18,7 +19,7 @@ const ServiceSection = ({ services, setServices }) => {
     title: '',
     description: '',
     imageData: null,
-    imageUrl: null, // Added imageUrl to state
+    imageUrl: null,
   });
 
   const [error, setError] = useState('');
@@ -34,15 +35,15 @@ const ServiceSection = ({ services, setServices }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
-    formData.append('image', file); // Change 'file' to 'image' to match the backend field name
+    formData.append('file', file);
     formData.append('upload_preset', uploadPreset);
 
-    axios.post('http://localhost:5000/upload', formData)
+    axios.post('https://api.cloudinary.com/v1_1/dqtbigvwt/image/upload', formData)
       .then((response) => {
         setNewService((prevState) => ({
           ...prevState,
-          imageData: response.data.imagePublicId, // Update with backend response data field names
-          imageUrl: response.data.imageUrl,
+          imageData: response.data.public_id,
+          imageUrl: response.data.secure_url,
         }));
       })
       .catch((error) => {
@@ -58,12 +59,12 @@ const ServiceSection = ({ services, setServices }) => {
         title,
         description,
         imagePublicId: imageData,
-        imageUrl,
+        imageUrl: imageUrl
       };
 
       const response = await axios.post('http://localhost:5000/api/services', newServiceData);
 
-      setServices(prevServices => [...prevServices, response.data]);
+      setServices((prevServices) => [...prevServices, response.data]);
       setNewService({ title: '', description: '', imageData: null, imageUrl: null });
       setError('');
     } catch (error) {
@@ -73,16 +74,21 @@ const ServiceSection = ({ services, setServices }) => {
   };
 
   return (
-    <Grid item xs={12}>
-      <Typography variant="h5" gutterBottom>Manage Services</Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      <TextField name="title" value={newService.title} label="Title" onChange={handleChange} />
-      <TextField name="description" value={newService.description} label="Description" onChange={handleChange} />
-      <input type="file" onChange={handleImageChange} />
-      <Button variant="contained" color="primary" onClick={handleAddService}>
-        Add Service
-      </Button>
-      <CollectionTable data={services} schema={serviceSchema} />
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>Manage Services</Typography>
+        {error && <Typography color="error">{error}</Typography>}
+        <TextField name="title" value={newService.title} label="Title" onChange={handleChange} />
+        <TextField name="description" value={newService.description} label="Description" onChange={handleChange} />
+        <input type="file" onChange={handleImageChange} />
+        {newService.imageUrl && <img src={newService.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '300px' }} />}
+        <Button variant="contained" color="primary" onClick={handleAddService}>
+          Add Service
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <CollectionTable data={services} schema={serviceSchema} />
+      </Grid>
     </Grid>
   );
 };
