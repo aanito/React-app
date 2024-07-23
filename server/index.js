@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { GridFSBucket } = require('mongodb');
-const multer = require('multer');
+// const multer = require('multer');
+const upload = require('./multer-config');
 const { Readable } = require('stream');
+const cloudinary = require('./cloudinary/cloudinary');
 
 // Use the mongoose library's built-in promise library to avoid deprecation warnings
 mongoose.Promise = global.Promise;
@@ -37,8 +39,11 @@ conn.once('open', () => {
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Increase payload limit
+app.use(bodyParser.json({ limit: '50mb' })); // Set the limit as per your requirement
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Set the limit as per your requirement
+
+
 app.use(express.json({ limit: '10mb' }));
 
 
@@ -57,6 +62,23 @@ app.use('/api/teammembers', teamMembersRouter);
 app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/partners', partnersRouter);
+
+// Express route for image upload
+app.post('/upload', upload.single('image'), async (req, res) => {
+  try {
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path , {
+      //  folder:'folder_name'
+      // folder:'Folders'
+    });
+
+    // Send the Cloudinary URL in the response
+    res.json({ imageUrl: result.secure_url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error uploading image to Cloudinary' });
+  }
+});
 
 // Start the server
 const PORT = process.env.PORT || 5000;

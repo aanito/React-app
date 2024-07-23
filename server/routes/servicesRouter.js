@@ -1,21 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Service = require('../models/ServiceModel');
+// const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const { GridFSBucket } = require('mongodb');
-const { Readable } = require('stream');
-const mongoose = require('mongoose');
+const { IncomingForm } = require('formidable');
+const cloudinary = require('../cloudinary/cloudinary');
 
-const conn = mongoose.connection;
-let gfs;
 
-conn.once('open', () => {
-  gfs = new GridFSBucket(conn.db, {
-    bucketName: 'images'
-  });
-});
 
-const upload = multer().single('image');
+// Set up multer for file uploads
+const upload = multer();
 
 // GET endpoint to fetch all services
 router.get('/', async (req, res) => {
@@ -28,28 +22,35 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST endpoint to add a new service with image upload
-router.post('/', upload, async (req, res) => {
+// POST endpoint to add a new service with Cloudinary image upload
+router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { title, description, imageData } = req.body;
-    const newService = new Service({ title, description });
-
-    if (imageData) {
-      const savedService = await newService.save();
-
-      savedService.image.data = imageData; // Store the base64 encoded image data
-      savedService.image.contentType = 'image/png'; // Update the content type as per your requirements
-      await savedService.save();
-
-      res.status(201).json(savedService);
-    } else {
-      const savedService = await newService.save();
-      res.status(201).json(savedService);
+    const { title, description } = req.body;
+    
+    if (!req.file) {
+      return res.status(400).json({ message: 'Image file is required' });
     }
+
+    // Upload image to Cloudinary
+    const uploadedImage = await cloudinary.uploader.upload(req.file.path, { folder: 'services' });
+
+    // Create a new Service instance with title, description, and imagePublicId
+    const newService = new Service({
+      title,
+      description,
+      imageUrl: uploadedImage.secure_url, // Store the secure URL of the uploaded image
+      imagePublicId: uploadedImage.public_id
+    });
+
+    // Save the service with the image details
+    const savedService = await newService.save();
+    
+    res.status(201).json(savedService);
   } catch (error) {
     console.error('Error adding service:', error);
     res.status(500).json({ message: 'Error adding service' });
   }
 });
+
 
 module.exports = router;
