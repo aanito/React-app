@@ -24,13 +24,12 @@ const teamMemberSchema = new Schema({
     required: true
   },
   interests: {
-    type: String,
-    required: true
+    type: String
   },
   avatarUrl: {
-    type: String, // Assuming the avatar URL is a string
-    required: true
+    type: String
   }
+  
 });
 
 // Create the Team Member model

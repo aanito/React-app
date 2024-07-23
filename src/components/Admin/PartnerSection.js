@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Typography, Grid, TextField, Button } from '@mui/material';
 import CollectionTable from './CollectionTable';
 
+const uploadPreset = 'partners';
+
 const partnerSchema = {
   columns: [
     { label: 'Name', field: 'name' },
@@ -13,6 +15,7 @@ const partnerSchema = {
 const PartnerSection = ({ partners, setPartners }) => {
   const [newPartner, setNewPartner] = useState({
     name: '',
+    logoPublicId: '',
     logoUrl: '',
   });
 
@@ -24,12 +27,39 @@ const PartnerSection = ({ partners, setPartners }) => {
     }));
   };
 
-  const handleAddPartner = async () => {
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+
     try {
-      const response = await axios.post('http://localhost:5000/api/partners', newPartner);
+      const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, formData);
+      setNewPartner(prevState => ({
+        ...prevState,
+        logoUrl: response.data.secure_url,
+        logoPublicId: response.data.public_id,
+      }));
+    } catch (error) {
+      console.error('Error uploading logo to Cloudinary:', error);
+    }
+  };
+
+  const handleAddPartner = async () => {
+    const { name, logoPublicId, logoUrl } = newPartner;
+
+    const newPartnerData = {
+      name,
+      logoPublicId,
+      logoUrl
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/partners', newPartnerData);
       setPartners(prevPartners => [...prevPartners, response.data]);
       setNewPartner({
         name: '',
+        logoPublicId: '',
         logoUrl: '',
       });
     } catch (error) {
@@ -38,28 +68,22 @@ const PartnerSection = ({ partners, setPartners }) => {
   };
 
   useEffect(() => {
-    // Fetch partners data on component mount
     axios.get('http://localhost:5000/api/partners')
       .then(response => setPartners(response.data))
       .catch(error => console.error('Error fetching partners:', error));
   }, [setPartners]);
 
   return (
-    <Grid item xs={12}>
+    <Grid container spacing={2} direction="column" alignItems="flex-start">
       <Typography variant="h5" gutterBottom>Manage Partners</Typography>
-      <Grid container spacing={2}>
-        <Grid item>
-          <TextField name="name" value={newPartner.name} label="Name" onChange={handleChange} />
-        </Grid>
-        <Grid item>
-          <TextField name="logoUrl" value={newPartner.logoUrl} label="Logo URL" onChange={handleChange} />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={handleAddPartner}>
-            Add Partner
-          </Button>
-        </Grid>
-      </Grid>
+      <TextField name="name" value={newPartner.name} label="Name" onChange={handleChange} fullWidth />
+      <input type="file" onChange={handleImageChange} />
+      {newPartner.logoUrl && (
+        <img src={newPartner.logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} />
+      )}
+      <Button variant="contained" color="primary" onClick={handleAddPartner} fullWidth>
+        Add Partner
+      </Button>
       <CollectionTable data={partners} schema={partnerSchema} />
     </Grid>
   );

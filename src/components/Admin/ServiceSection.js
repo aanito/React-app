@@ -4,7 +4,7 @@ import { Typography, Grid, TextField, Button } from '@mui/material';
 import CollectionTable from './CollectionTable';
 
 const uploadPreset = 'services'; // Actual unsigned upload preset
-// const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
 
 const serviceSchema = {
   columns: [
@@ -38,7 +38,7 @@ const ServiceSection = ({ services, setServices }) => {
     formData.append('file', file);
     formData.append('upload_preset', uploadPreset);
 
-    axios.post('https://api.cloudinary.com/v1_1/dqtbigvwt/image/upload', formData)
+    axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, formData)
       .then((response) => {
         setNewService((prevState) => ({
           ...prevState,

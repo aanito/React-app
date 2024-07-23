@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import axios from 'axios'; // For making HTTP requests
+import axios from 'axios';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -13,7 +13,7 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/events'); // Assuming '/api/events' fetches events data
+        const response = await axios.get('http://localhost:5000/api/events');
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -24,7 +24,7 @@ const Events = () => {
   }, []);
 
   if (events.length === 0) {
-    return <div>Loading...</div>; // Display a loading message while fetching data
+    return <div>Loading...</div>;
   }
 
   const upcomingEvent = events.reduce((earliest, event) => (
@@ -40,7 +40,7 @@ const Events = () => {
         <CardMedia
           component="img"
           height="200"
-          image={upcomingEvent.image}
+          image={upcomingEvent.imageUrl}
           alt={upcomingEvent.title}
         />
         <CardContent>
@@ -62,12 +62,12 @@ const Events = () => {
       {/* Display details of other events */}
       <Grid container spacing={2} justifyContent="center">
         {otherEvents.map(event => (
-          <Grid item key={event.title}>
+          <Grid item key={event._id}>
             <Card sx={{ maxWidth: 250 }}>
               <CardMedia
                 component="img"
                 height="140"
-                image={event.image}
+                image={event.imageUrl}
                 alt={event.title}
               />
               <CardContent>
