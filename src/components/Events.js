@@ -34,58 +34,60 @@ const Events = () => {
   const otherEvents = events.filter(event => event !== upcomingEvent);
 
   return (
-    <div>
-      {/* Display details of the upcoming event */}
-      <Card sx={{ maxWidth: 600, margin: 'auto' }}>
-        <CardMedia
-          component="img"
-          height="200"
-          image={upcomingEvent.imageUrl}
-          alt={upcomingEvent.title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {upcomingEvent.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            Date: {new Date(upcomingEvent.date).toDateString()}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            {upcomingEvent.description}
-          </Typography>
-          <Button variant="contained" component="a" href={upcomingEvent.registrationLink}>
-            Register Now
-          </Button>
-        </CardContent>
-      </Card>
+    <section id="events">
+      <div>
+        {/* Display details of the upcoming event */}
+        <Card sx={{ maxWidth: 600, margin: 'auto' }}>
+          <CardMedia
+            component="img"
+            height="200"
+            image={upcomingEvent.imageUrl}
+            alt={upcomingEvent.title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {upcomingEvent.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Date: {new Date(upcomingEvent.date).toDateString()}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" paragraph>
+              {upcomingEvent.description}
+            </Typography>
+            <Button variant="contained" component="a" href={upcomingEvent.registrationLink}>
+              Register Now
+            </Button>
+          </CardContent>
+        </Card>
 
-      {/* Display details of other events */}
-      <Grid container spacing={2} justifyContent="center">
-        {otherEvents.map(event => (
-          <Grid item key={event._id}>
-            <Card sx={{ maxWidth: 250 }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={event.imageUrl}
-                alt={event.title}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  {event.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  Date: {new Date(event.date).toDateString()}
-                </Typography>
-                <Button variant="outlined" component="a" href={event.registrationLink}>
-                  Register
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+        {/* Display details of other events */}
+        <Grid container spacing={2} justifyContent="center">
+          {otherEvents.map(event => (
+            <Grid item key={event._id}>
+              <Card sx={{ maxWidth: 250 }}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={event.imageUrl}
+                  alt={event.title}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    {event.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Date: {new Date(event.date).toDateString()}
+                  </Typography>
+                  <Button variant="outlined" component="a" href={event.registrationLink}>
+                    Register
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    </section>
   );
 };
 

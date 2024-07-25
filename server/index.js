@@ -5,9 +5,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { GridFSBucket } = require('mongodb');
 // const multer = require('multer');
-const upload = require('./multer-config');
-const { Readable } = require('stream');
-const cloudinary = require('./cloudinary/cloudinary');
+// const upload = require('./multer-config');
+// const { Readable } = require('stream');
+// const cloudinary = require('./cloudinary/cloudinary');
+
 
 // Use the mongoose library's built-in promise library to avoid deprecation warnings
 mongoose.Promise = global.Promise;
@@ -44,7 +45,7 @@ app.use(bodyParser.json({ limit: '50mb' })); // Set the limit as per your requir
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Set the limit as per your requirement
 
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
 
 
 // Import router files
@@ -54,6 +55,7 @@ const teamMembersRouter = require('./routes/teamMembersRouter');
 const testimonialsRouter = require('./routes/testimonialsRouter');
 const eventsRouter = require('./routes/eventsRouter');
 const partnersRouter = require('./routes/partnersRouter');
+const authRouter = require('./routes/authRouter');
 
 // Use the routers
 app.use('/api/services', servicesRouter);
@@ -62,6 +64,7 @@ app.use('/api/teammembers', teamMembersRouter);
 app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/partners', partnersRouter);
+app.use('/api/auth', authRouter);
 
 
 // Start the server
